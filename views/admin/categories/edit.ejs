@@ -1,0 +1,54 @@
+<%- include ('../../partials/header.ejs') %>
+<%- include ('../../partials/navbar.ejs') %>
+
+<div class="container">
+    <br>
+    <div class="card">
+        <div class="card-header">
+            <h2>Edição de Categoria</h2>
+        </div>
+        <div class="card-body">
+            <!-- Formulário de edição -->
+            <form method="POST" action="/categories/update/<%= category.id %>" id="categoryForm" onsubmit="showNotification(event)">
+                <!-- O valor do input será preenchido com o título da categoria -->
+                <input type="text" class="form-control" name="title" placeholder="Digite o título da categoria!" value="<%= category.title %>" required>
+                <br>
+                <button type="submit" class="btn btn-success">Atualizar</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+
+<!-- Card de notificação que ficará no canto inferior direito -->
+<div id="notificationCard" class="card" style="background-color: green; border-radius: 20px; position: fixed; bottom: 20px; right: 20px; display: none; width: 200px; z-index: 999;">
+    <div class="card-body ">
+        <div class="card-title text-center">  
+            <h5 class=" text-white">Sucesso!</h5>
+            <p class=" text-white">categoria atualizada</p>
+        </div>
+      
+    </div>
+</div>
+
+<%- include ('../../partials/footer.ejs') %>
+
+<script>
+    // Função para mostrar o card de notificação
+    function showNotification(event) {
+        event.preventDefault(); // Previne o envio do formulário por enquanto
+
+        // Exibe o card de notificação
+        const notificationCard = document.getElementById("notificationCard");
+        notificationCard.style.display = "block"; // Torna o card visível
+
+        // Esconde o card de notificação após 4 segundos
+        setTimeout(() => {
+            notificationCard.style.display = "none";
+            // Envia o formulário após a exibição do card
+            document.getElementById("categoryForm").submit();
+        }, 1000); // 1 segundos
+    }
+</script>

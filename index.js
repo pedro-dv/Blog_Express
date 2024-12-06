@@ -44,10 +44,40 @@ app.use('/', CategoriesController);
 
 
 
+app.get('/', (req, res)=> {
+    ModelArticles.findAll({order: [['id', 'DESC']]})
+    .then((articles)=> {
+        ModelCategories.findAll()
+        .then(categories=>{
+            res.render('index', {articles: articles, categories: categories});
+        })
+        
+    })
+   
+});
 
 
-app.get('/', (req, res)=>{
-    res.render('index.ejs');
+
+app.get('/:slug', (req, res)=>{
+    var slug = req.params.slug;
+    ModelArticles.findOne({
+        where: {
+            slug: slug
+        }
+    }).then(article => {
+        if (article != undefined){
+            ModelCategories.findAll()
+            .then(categories=>{
+                res.render('articles.ejs', {article: article, categories: categories});
+            })
+
+        }else{
+            res.redirect('/');
+        }
+    }).catch(err =>{
+        res.redirect('/');
+    });
+    
 });
 
 

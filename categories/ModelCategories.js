@@ -4,11 +4,14 @@ const connection = require('../database/connection')
 
 const ModelCategories = connection.define('tb_categories', {
     title:{
-        type: Sequelize.STRING,allowNull: false
+        type: Sequelize.STRING,
+        allowNull: false
     },
      slug:{
-        type: Sequelize.STRING, allowNull: false
+        type: Sequelize.STRING,
+        allowNull: false
     }
+
 })
 
 ModelCategories.sync()

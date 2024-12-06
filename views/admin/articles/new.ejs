@@ -1,0 +1,66 @@
+<%- include ('../../partials/header.ejs') %>
+<%- include ('../../partials/navbar.ejs') %>
+
+<div class="container ">
+    <br>
+    <div class="card">
+        <div class="card-header">
+            <h2> Novo artigo </h2>
+        </div>
+        <div class="card-body">
+            <form method="POST" action="/articles/save" id="categoryForm" onsubmit="showNotification(event)">
+                <input type="text" class="form-control" name="title" placeholder="Defina o título do artigo" required>
+                <br>
+                <textarea class="form-control" name="body" placeholder="Escreva o artigo aqui!" id="article"></textarea>
+                <br>
+                <label>Relacionamento de categoria:</label>
+                <select name="category" class="form-control" required>
+                    <% categories.forEach((category) => { %>
+                        <option value="<%= category.id %>"><%= category.title %></option>
+                    <% }) %>
+                </select>
+                <br>
+                <button type="submit" class="btn btn-success">Cadastrar</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Card de notificação -->
+<div id="notificationCard" class="card" style="background-color: green; border-radius: 20px; position: fixed; bottom: 20px; right: 20px; display: none; width: 300px; z-index: 999;">
+    <div class="card-body ">
+        <div class="card-title text-center">  
+            <h5 class="text-white">Sucesso!</h5>
+            <p class="text-white">Artigo adicionado</p>
+        </div>
+    </div>
+</div>
+
+<%- include ('../../partials/footer.ejs') %>
+
+<!-- Configurações do TinyMCE -->
+<script src="/tinymce/tinymce.min.js"></script>
+<script>
+    tinymce.init({
+        language: 'pt_BR',
+        selector: "#article",
+        plugins: [
+            'advlist autolink link image lists print preview hr searchreplace wordcount fullscreen insertdatetime media save table paste emoticons'
+        ]
+    });
+</script>
+
+<!-- Configurações de notificação -->
+<script>
+    function showNotification(event) {
+        event.preventDefault();
+
+        const notificationCard = document.getElementById("notificationCard");
+        notificationCard.style.display = "block";
+
+        setTimeout(() => {
+            notificationCard.style.display = "none";
+            document.getElementById("categoryForm").submit();
+        }, 2000);
+    }
+</script>

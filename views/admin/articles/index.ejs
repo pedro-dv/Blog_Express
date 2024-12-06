@@ -1,0 +1,54 @@
+<%- include ('../../partials/header.ejs') %>
+<%- include ('../../partials/navbar.ejs') %>
+
+<div class="container">
+    <hr>
+    <a class="btn btn-success" href="/admin/articles/new">Adicionar artigos</a>
+    <hr>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Titulo</th>
+                <th>Slug</th>
+                <th>Categoria</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+
+        <% articles.forEach((article)=>{ %>
+        <tbody>
+            <tr style="color: rgb(106, 136, 148);">
+                <th><%= article.id %></th>
+                <th><%= article.title %></th>
+                <th><%= article.slug %></th>
+                <!--Isso evita o erro caso algum artigo não tenha uma categoria associada.-->
+                <th><%= article.tb_category ? article.tb_category.title : "Sem categoria" %></th>
+                <th>
+                    <form method="post" action="/articles/remover" style="display: inline;" onsubmit="deletar(event, this)">
+                        <input type="hidden" name="id" value="<%= article.id %>">
+                         <button class="btn btn-danger btn-sm">remover</button>
+                    </form>
+                </th>
+
+            </tr>    
+        </tbody>
+        <% }) %>
+
+    </table>
+</div>
+
+<%- include ('../../partials/footer.ejs') %>
+
+
+
+<!-- PERGUNTAR ANTES DE REMOVER -->
+<script>
+    function deletar(event, form){
+        event.preventDefault();
+        var decison = confirm('Você tem certeza quer romover este artigo?');
+        if(decison){
+            form.submit();
+        }
+    }
+</script>

@@ -3,6 +3,8 @@
 
 <div class="container">
     <hr>
+    <a class="btn btn-success" href="/admin/categories/new">Adicionar Categoria</a>
+    <hr>
     <table class="table table-bordered">
         <thead>
             <tr>
@@ -13,16 +15,40 @@
             </tr>
         </thead>
 
+        <% categories.forEach(categorie => { %>
         <tbody>
             <tr style="color: rgb(106, 136, 148);">
-                <th>1</th>
-                <th>Dev Web</th>
-                <th>dev-web</th>
-                <th></th>
+                <th><%= categorie.id %></th>
+                <th><%= categorie.title %></th>
+                <th><%= categorie.slug %></th>
+                <th>
+                    <form method="post" action="/categories/remover" style="display: inline;" onsubmit="deletar(event, this)">
+                        <input type="hidden" name="id" value="<%= categorie.id %>">
+                         <button class="btn btn-danger btn-sm">remover</button>
+                    </form>
+                    <form method="get" action="/categories/edit/<%= categorie.id %>" style="display: inline;">
+                        <button class="btn btn-secondary btn-sm">editar</button>
+                    </form>
+                    
+                </th>
             </tr>
         </tbody>
-        
+        <% }); %>
+
     </table>
 </div>
 
 <%- include ('../../partials/footer.ejs') %>
+
+
+
+<!-- PERGUNTAR ANTES DE REMOVER -->
+<script>
+    function deletar(event, form){
+        event.preventDefault();
+        var decison = confirm('Você tem certeza quer romover esta categoria?');
+        if(decison){
+            form.submit();
+        }
+    }
+</script>
